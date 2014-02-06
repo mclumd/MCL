@@ -1,0 +1,7 @@
+("sc:counter" :cpv (0.5 ))
+("indication" :dep ("sc:counter" ) :cpv (0.5 0.5 ))
+("failure" :dep ("indication" ) :cpv (0.5 0.5 ))
+("response" :cpv (0.5 ))
+("tryAgain" :dep ("response" "failure" "sc:counter" ) :cpv (0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ))
+("try2Again" :dep ("response" "failure" "sc:counter" ) :cpv (0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ))
+("try3Again" :dep ("response" "failure" "sc:counter" ) :cpv (0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ))

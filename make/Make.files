@@ -1,0 +1,27 @@
+MCL_FILES  = mcl_symbols \
+	     mclEntity mclOntology \
+	     keyGen mclSensorDef \
+	     mcl_observables legalspec \
+	     mclNode oNodes \
+	     links linkFactory dynamicILinks fringe_linkage_legalspecs \
+	     noiseProfiles \
+	     mclProperties output \
+	     expectations expectationFactory \
+	     mclMonitorResponse \
+	     buildCore mcl_multiagent_api mcl_ma_observables \
+	     mcl mclFrame mclFrameNAG mclReEnter \
+	     frameEntryVector reentrancy SelectBestREB PassiveREB \
+	     DWtestREB \
+	     mclTimer ontologyRecord ontology_reader \
+	     abstractGlue glueFactory \
+	     hgGlue hgCPT smileGlue \
+	     topSort \
+	     config/ontology_config config/ontology_configurator \
+	     config/configRC config/configCPT \
+	     utils/makeDot
+		 # pnlGlue.o mclExceptions \
+		 # mclHostAPI.o 
+		 # mclSettings mclLogger textUtils 
+
+MCL_OBJ_FILES = $(patsubst %,obj/%.o,$(MCL_FILES))
+

@@ -1,0 +1,4 @@
+pauselen;counter;50
+--exp--
+0;0;0-self-pauselen-100.0
+--exec--

@@ -1,0 +1,31 @@
+## defs for system tools
+
+CC = g++
+LD = g++
+CP = cp
+RM = rm
+LS = ls
+CAT = cat
+
+# BOLODIR  = /usr/local/linbolo-113
+BOLODIR  = /fs/disco/group/systems/linbolo/linbolo-113
+UIDIR    =
+
+CFLAGS = -g -Wall
+LINKFLAGS = -Wl,-G -shared
+# -Wl,E = export all
+
+LIBEXT     = dll
+BRAINEXT   = brn
+
+## GLIB requirements
+BRAININCS += -I/usr/include/glib-1.2 -I/usr/lib/glib/include
+BRAINLIBS += -L/usr/lib -lglib
+
+## GTK requirements
+#UIINCS += -I/usr/include/gtk-1.2 -I/usr/X11R6/include
+#UILIBS += -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -ldl -lXi -lXext -lX11 -lm
+UIINCS =
+UILIBS =
+
+MACHINE = $(shell hostname)

@@ -1,0 +1,6 @@
+("runSensorDiagnostic" 1)
+("runEffectorDiagnostic" 1)
+("resetSensor" 1.5)
+("resetEffector" 2.0)
+("rebuildPredictiveModels" 2.0)
+("tryAgain" 1.5)

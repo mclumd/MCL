@@ -1,0 +1,21 @@
+TODO:
+ November 18 - Darsana Metacognition Seminar
+
+Desiderata:
+ conditional expectations
+ sequential expectations
+ declarative language for expressing expectations
+
+Google Docs: requirements document for expectations language
+  a declarative language of expectations
+ simple:
+  polling:
+    "speed SHOULD BE-BELOW 100"
+  duration:
+    "SHOULD TAKE LESS-THAN 100"
+ delay:
+  "IN 2 seconds speed SHOULD BE-ABOVE 20"
+ conditional:
+  "WHEN bark.actor IS $dog THEN bark.object SHOULD BE $animate"
+ sequential:
+  "action SHOULD NOT-EQUAL action AT -1 STEP"

@@ -1,0 +1,13 @@
+("sc:counter" :cpv (0.5 ))
+("sc:actor" :cpv (0.5))
+("indication" :dep ("sc:counter" ) :cpv (0.5 0.5 ))
+("pauseInd" :dep ("sc:actor" ) :cpv (0.5 0.5 ))
+("failure" :dep ("indication" ) :cpv (0.0 0.0 ))
+("userError" :dep ("sc:actor" ) :cpv (0.5 0.5 ))
+("modelError" :dep ("sc:counter" ) :cpv (0.5 0.5 ))
+("response" :cpv (0.5))
+("responsePause" :dep ("pauseInd" "userError") :cpv (0.5 0.5 0.5 0.5 ))
+("responseRevise" :dep ("indication" "modelError") :cpv (0.5 0.5 0.5 0.5 ))
+("tryAgain" :dep ("responsePause" "sc:actor") :cpv (0.5 0.5 0.5 0.5 ))
+("reviseExpectation" :dep ("responseRevise" "sc:counter") :cpv (0.5 0.5 0.5 0.5 ))
+

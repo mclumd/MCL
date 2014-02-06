@@ -1,0 +1,185 @@
+# BASIC.ONT .... basic MCL ontology description file
+
+# node types:
+#
+# hostProp - host properties
+# genInd - general purpose indication node
+# concInd - concrete (fringe) indication directly activatable by MCL
+# iCore - indication core node 
+# HII - Host Initiated Indication
+# failure - general purpose failure node
+# genResponse - general purpose response node
+# interactive - boolean interactive response node
+# concResponse - concrete (implementable) response node
+
+# link types:
+#
+# > intraontological
+# link abstraction(src=,dst=)
+#      - from specific (src) node to more general (dst)
+# link IFC(src=,dst=)
+#      - Indication Fringe to Core
+# link specification(src=,dst=)
+#      - from abstract to specific (response ontology base type)
+#
+# > interontological
+# link diagnostic(src=,dst=)
+#      - link from indication to failure
+# link inhibitory(src=,dst=)
+#      - link from indication to response (inhibiting response)
+# link support(src=,dst=)
+#      - link from indication to response (supporting response)
+
+include CORE_indicationFringe
+
+ontology indications (
+
+  # much of this ontology is currently in CORE_iF
+  # if it is in dynamicILinks, it should be in iF
+
+  node iCore(name=resourceUnchanged,
+             doc="a resource level apparently did not change.")
+  node iCore(name=stuck,
+	     doc="a spatial sensor/expectation indicates an expected movement did not occur.")
+
+  node HII(name=sensorVerifiedBroken,
+	   doc="the host is verifying that a sensor appears nonfunctional.")
+  node HII(name=sensorVerifiedWorking,
+	   doc="the host is verifying that a sensor of interest appears to be working.")
+
+)
+
+ontology failures (
+  node failure(name=failure,
+	       doc="the class of all failures.")
+  node failure(name=knowledgeError,
+	       doc="class of failures pertaining to internal knowledge and representations.")
+
+  node failure(name=plantError,
+	       doc="class of failures pertaining to the physical agent.")
+  node failure(name=modelError,
+	       doc="class of failures pertaining to internal representations.")
+  node failure(name=predictiveModelError,
+	       doc="class of failures in which inaccurate predictions made by models are causing anomalies.")
+  node failure(name=proceduralModelError,
+	       doc="class of failures in which inadequacies in a procedural model is causing anomalies.")
+  node failure(name=effectorError,
+	       doc="class of failures in which an effector is not operating to spec.")
+  node failure(name=sensorError,
+	       doc="class of failures in which a sensor is not operating to spec.")
+  node failure(name=sensorNoise,
+	       doc="anomaly is caused by noise outside of specified parameters.")
+  node failure(name=sensorMiscalibrated,
+	       doc="anomaly is caused by misconfiguration or calibration of a sensor.")
+  node failure(name=sensorMalfunction,
+	       doc="anomaly is caused by sensor fault other than noise.")
+  node failure(name=sensorStuck,
+	       doc="anomaly is caused by a sensor that is no longer changing according to specification.")
+
+
+)
+
+ontology responses (
+  node genResponse(name=response,
+  	           doc="root of all responses.")
+  node genResponse(name=internalResponse,
+	           doc="response taken internally to the host.")
+  node genResponse(name=externalResponse,
+	           doc="response taken with external help.")
+  node genResponse(name=plantResponse,
+  	           doc="response pertaining to the physical agent.")
+
+  node genResponse(name=systemResponse,
+  	           doc="response pertaining to the soft agent.")
+  node genResponse(name=runDiagnostic,
+  	           doc="perform a diagnostic of the agent aparatus.")
+
+  node genResponse(name=amendKnowledgeBase,
+  	           doc="general changes to the host's KB.")
+  node genResponse(name=amendPredictiveModels,
+  	           doc="modify/revise predictive models.")
+  node genResponse(name=amendProceduralModels,
+  	           doc="modify/revise procedural models.")
+
+  node interactive(name=runSensorDiagnostic,
+  	           doc="instructs the agent to check for sensor faults.",
+		   code=crc_sensor_diag,
+		   runOnce=true,
+		   yes=sensorVerifiedBroken,
+		   no=sensorVerifiedWorking)
+  node concResponse(name=resetSensor,
+		    code=crc_sensor_reset,
+  	            doc="physical restart of sensor.")
+  node concResponse(name=runEffectorDiagnostic,
+  	            doc="instructs the agent to check for nonfunctional effectors.",
+		    code=crc_effector_diag)
+  node concResponse(name=resetEffector,
+  	            doc="physical restart of an effector/effector group.",
+		    code=crc_effector_reset)
+  node concResponse(name=rebuildPredictiveModels,
+  	            doc="rerun batch-mode predictive model generators.",
+		    code=crc_rebuild_models)
+  node concResponse(name=tryAgain,
+  	            doc="instruct the host to retry the failed activity.",
+		    code=crc_try_again)
+
+)
+
+linkage all (
+
+  # I->F I links
+
+  link IFC(src=sc:resource,dst=resourceUnchanged)
+  link IFC(src=missed-unchanged,dst=resourceUnchanged)
+  link IFC(src=sc:spatial,dst=stuck)
+  link IFC(src=missed-unchanged,dst=stuck)
+
+  # intra F links
+
+  link abstraction(src=knowledgeError,dst=failure)
+  link abstraction(src=plantError,dst=failure)
+  link abstraction(src=modelError,dst=knowledgeError)
+  link abstraction(src=predictiveModelError,dst=modelError)
+  link abstraction(src=proceduralModelError,dst=modelError)
+  link abstraction(src=sensorError,dst=plantError)
+  link abstraction(src=sensorNoise,dst=sensorError)
+  link abstraction(src=sensorStuck,dst=sensorError)
+  link abstraction(src=sensorMiscalibrated,dst=sensorError)
+  link abstraction(src=sensorMalfunction,dst=sensorError)
+  link abstraction(src=effectorError,dst=plantError)
+
+  # intra R links
+
+  link specification(src=response,dst=internalResponse)
+  link specification(src=internalResponse,dst=plantResponse)
+  link specification(src=internalResponse,dst=systemResponse)
+  link specification(src=plantResponse,dst=runDiagnostic)
+  link specification(src=plantResponse,dst=resetEffector)
+  link specification(src=plantResponse,dst=resetSensor)
+  link specification(src=runDiagnostic,dst=runSensorDiagnostic)
+  link specification(src=runDiagnostic,dst=runEffectorDiagnostic)
+  link specification(src=systemResponse,dst=amendKnowledgeBase)
+  link specification(src=amendKnowledgeBase,dst=amendPredictiveModels)
+  link specification(src=amendKnowledgeBase,dst=amendProceduralModels)
+  link specification(src=amendKnowledgeBase,dst=rebuildPredictiveModels)
+  link specification(src=response,dst=externalResponse)
+  link specification(src=systemResponse,dst=tryAgain)
+
+  # inter links
+
+  link diagnostic(src=indication,dst=failure)
+  link diagnostic(src=sensorsCanFail,dst=sensorMalfunction)
+  link inhibitory(src=sensorVerifiedBroken,dst=runSensorDiagnostic)
+  link inhibitory(src=sensorVerifiedWorking,dst=runSensorDiagnostic)
+  # link support(src=sensorVerifiedBroken,dst=fixSensor)
+  # link inhibitory(src=sensorVerifiedWorking,dst=fixSensor)
+  link diagnostic(src=resourceUnchanged,dst=predictiveModelError)
+  link diagnostic(src=stuck,dst=sensorStuck)
+  link diagnostic(src=stuck,dst=effectorError)
+
+  link prescriptive(src=sensorMalfunction,dst=runSensorDiagnostic)
+  link prescriptive(src=predictiveModelError,dst=amendPredictiveModels)
+  link prescriptive(src=sc:spatial,dst=tryAgain)
+  link prescriptive(src=sc:state,dst=runEffectorDiagnostic)
+  link prescriptive(src=sc:control,dst=amendProceduralModels)
+)

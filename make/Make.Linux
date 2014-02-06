@@ -1,0 +1,33 @@
+## defs for system tools
+
+CC = g++
+LD = g++
+CP = cp
+CPR = cp -r
+RM = rm -f
+LS = ls
+CAT = cat
+MDIR = mkdir --parents
+
+CFLAGS = -g
+LINKFLAGS = -Wl,-G -shared 
+# -Wl,E = export all
+
+LIBEXT        = so
+STATIC_LIBEXT = a
+
+MACHINE = $(shell hostname)
+
+# PNL_LIBDIR = /usr/local/lib/
+# PNL_INCDIRS = /usr/local/include/ /usr/local/high/include/ /usr/local/include/opencx/
+# PNL_LINKFLAGS = -L/usr/local/lib -lpnl -lcxcore -lhigh -Wl,--rpath -Wl,/usr/local/lib
+
+JAVA_BUILD_DIR = $(HOME)
+
+SYS_LIBDIRS = /usr/lib 
+
+# overwrite this in Make.$(MACHINE) if you don't like it
+#MACHINE_INSTALLROOT = /usr/local
+MACHINE_INSTALLROOT = /home/emily/Desktop/ALFRED/mcl_current
+#MACHINE_INSTALLROOT = /fs/erewhon/group/work/mcl_current
+MACHINE_LIBDIRS = $(MACHINE_INSTALLROOT)/lib/

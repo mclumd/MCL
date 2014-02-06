@@ -1,0 +1,41 @@
+ontology indications (
+  node concInd(name=sc:counter)
+  node iCore(name=indication, doc="root indication for fringe nodes")
+)
+
+ontology failures (
+  node failure(name=failure,
+	       doc="the class of all failures.")
+)
+
+ontology responses (
+  node genResponse(name=response,
+				doc="root of all responses.")
+  node concResponse(name=tryAgain,
+  	            doc="instruct the host to retry the failed activity.",
+		    code=crc_try_again)
+  node concResponse(name=try2Again,
+				doc="instruct the host to retry the failed activity 2.",
+			code=crc_solicit_help)
+)
+
+linkage all (
+  # intra I links
+  link IFC(src=sc:counter, dst=indication)
+  
+  # intra F links
+  
+  # intra R links
+  link specification(src=response,dst=tryAgain)
+  link specification(src=response,dst=try2Again)
+
+  # inter links
+  # problem could have been no F->R links?  
+  
+  link diagnostic(src=indication,dst=failure)
+  link prescriptive(src=failure,dst=tryAgain)
+  link prescriptive(src=sc:counter, dst=tryAgain)
+
+  link prescriptive(src=failure,dst=try2Again)
+  link prescriptive(src=sc:counter, dst=try2Again)
+)

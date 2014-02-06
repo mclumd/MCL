@@ -1,0 +1,34 @@
+ontology indications (
+  node concInd(name=sc:counter)
+  node iCore(name=indication, doc="root indication for fringe nodes")
+)
+
+ontology failures (
+  node failure(name=failure,
+	       doc="the class of all failures.")
+)
+
+ontology responses (
+  node genResponse(name=response,
+				doc="root of all responses.")
+  node concResponse(name=changeExp,
+  	            doc="you need to change your expectation.",
+		    code=crc_revise_expectations)
+)
+
+linkage all (
+  # intra I links
+  link IFC(src=sc:counter, dst=indication)
+  
+  # intra F links
+  
+  # intra R links
+  link specification(src=response,dst=changeExp)
+
+  # inter links
+  # problem could have been no F->R links?  
+  
+  link diagnostic(src=indication,dst=failure)
+  link prescriptive(src=failure,dst=changeExp)
+  link prescriptive(src=sc:counter, dst=changeExp)
+)

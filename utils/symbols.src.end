@@ -1,0 +1,44 @@
+
+int metacog::symbols::smartval_int(string specifier, bool* error) {
+  int rv = -1;
+  { // try symbol stuff first
+    bool exists;
+    rv = global_symbol_intval(specifier,&exists);
+    if (exists) {
+      if (error) *error = false;
+      return rv;
+    }
+    else { // now try textFunctions
+      int rv = umbc::textFunctions::numval(specifier.c_str());
+      if (errno == 0) {
+	if (error) *error=false;
+	return rv;
+      }
+      else {
+	if (error) *error=true;
+	return -1;
+      }
+    }
+  }
+}
+
+  /*
+  int rv = umbc::textFunctions::numval(specifier.c_str());
+  if (errno == 0) {
+    if (error) *error=false;
+    return rv;
+  }
+  else {
+    bool exists;
+    rv = global_symbol_intval(specifier,&exists);
+    if (error) *error = !exists;
+    return rv;
+  }
+  */
+
+string metacog::symbols::reverse_lookup(string prefix, int value, 
+					bool* none, bool* multi) {
+  return __mcl_global_symtable.reverse_lookup(prefix,value,none,multi);
+}
+
+// end?

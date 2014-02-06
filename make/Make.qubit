@@ -1,0 +1,25 @@
+## defs for system tools
+
+CC = g++
+LD = g++
+CP = cp
+RM = rm
+LS = ls
+CAT = cat
+
+CFLAGS = -g
+LINKFLAGS = -Wl,-G -shared 
+# -Wl,E = export all
+
+LIBEXT     = so
+
+MACHINE = $(shell hostname)
+
+PNL_ROOTDIR = /usr/local/openpnl-1.0
+
+PNL_LIBDIR = $(PNL_ROOTDIR)/lib/
+PNL_INCDIRS = $(PNL_ROOTDIR)/include/ $(PNL_ROOTDIR)/high/include/ $(PNL_ROOTDIR)/include/opencx/
+
+PNL_LINKFLAGS = -L$(PNL_ROOTDIR)/lib -lpnl -lcxcore -lhigh -Wl,--rpath -Wl,$(PNL_ROOTDIR)/lib
+
+JAVA_BUILD_DIR = $(HOME)

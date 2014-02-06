@@ -1,0 +1,42 @@
+# ** mcl.writeConfigGlobal ** write configuration files to global (default)
+mcl.writeConfigGlobal=false
+
+# ** mcl.logFrames ** record intermediate framestates during processing
+mcl.logFrames=false
+
+# ** mcl.autoConfigCPTs ** attempt to apply CPT configs to new frames
+mcl.autoConfigCPTs
+
+# ** mcl.or.trapAsExceptions ** trap ontology reader errors as exceptions
+mcl.or.trapAsExceptions
+
+# ** mcl.suppressConfigErrors ** try to soldier on during config errors
+mcl.suppressConfigErrors=false
+
+# ** mcl.defaultOntology ** base name of default ontology
+mcl.defaultOntology=basic
+
+# ** mcl.reply ** alternatives=(telnet, prolog) - adds formatting to messages
+mcl.reply=telnet
+
+# ** mcl.port ** for TCP operation
+mcl.port=5150
+
+# ** mcl.doNotFail ** attempt at all costs to avoid exceptions
+mcl.doNotFail=false
+
+# ** mcl.configpath ** path to assets (config, netdefs, etc...)
+mcl.configpath=/usr/local/lib/mcl/
+
+# ** mcl.breakOnViolation ** 
+mcl.breakOnViolation=true
+
+# ** mcl.breakOnDLinkFailure ** breaks when an unknown node appears in ILinks
+mcl.breakOnDLinkFailure=true
+
+# ** mcl.rebPolicy ** policy for determining re-entrancy to a frame
+mcl.rebPolicy=passive
+
+# ** mcl.debugLevel ** level of debugging
+# 0 = max robustness, 1 = break on critical errors, 2 = break on all exceptions
+mcl.debugLevel=1

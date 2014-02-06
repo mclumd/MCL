@@ -1,0 +1,10 @@
+The current implementation of the Java/MCL connector is based off the
+TCP/Server code. It can be checked out from CVS as an Eclipse project,
+using the module name 'JavaTCPMCL'.
+
+The JNI implementation has been discontinued.
+
+The java directory in the MCL distribution root contains java code
+that can be used in support of the MCL Library. This includes but is
+not limited to the CPT Editor. It should not be used as a repository
+location for Java-MCL interoperability code. 

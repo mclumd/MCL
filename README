@@ -1,0 +1,100 @@
+Instructions for building MCL 2.0
+---------------------------------
+
+Required packages:
+
+- g++, standard c/c++ headers, and make
+- compile, build, and install UMBC_Utils.
+- a compiled version of the SMILE libraries (libsmile and libsmilelearn)
+  these libraries should be installed to libs/glue in the build directory
+ 
+Optional packages:
+
+- the "dot" package is required to convert dot output from the ontology
+  tools to postscript (on Ubuntu, dot is installed as part of the "graphvis"
+  package)
+
+
+Preparing for the build:
+
+- you should ensure that there are makefiles for your OS and machine in 
+  the "make" directory:
+  + make.$(MACHINENAME)
+  + make.$(OS)
+  
+  These files should define and/or override all OS or machine-specific
+  commands & directories to meet the minimum functionality required in
+  the build.
+  
+- make variables are used to define locations of include and libraries.
+  the prefix "build", "sys", and "machine" are used to allow build-wide,
+  system (OS) wide, and machine-specific assignments.
+
+- make sure that the libUMBC.so library is in your LD_LIBRARY_PATH or can 
+  otherwise be found by the loader. If you used default settings:
+  > export LD_LIBRARY_PATH=/usr/local/lib/
+
+  this is required during the symbol building step of the build.
+  
+Build Instructions:
+
+- after having specified the location for the install in the local 
+  makefile, run "make prepare" in the build directory.
+  this will create mcl subdirectories in the local lib and include 
+  directories, as well as a config directory under lib/mcl.
+
+- be sure to "make install" umbc_utils and that the install directory
+  is specified in one of the LIBDIR variables.
+  
+- "make install" in the build directory.
+  
+  this step will first build the MCL library, then copy it to
+  $(MACHINE_INSTALLROOT)/lib
+  then it will copy the headers in the api/mcl directory to
+  $(MACHINE_INSTALLROOT)/include/mcl/
+  and copy the "default" configuration and netdefs from the config 
+  directory to $(MACHINE_INSTALLROOT)/lib/mcl/config/
+
+  Being as this will potentially write libraries and includes to
+  /usr/local/*, do make sure that you have permissions to write
+  there. If you don't, you can change $(MACHINE_INSTALLROOT) in your
+  machine-specific Make file. Also note that if you try to "sudo"
+  install it, your sudo session may not have the proper
+  LD_LIBRARY_PATH setting, and the symbol build may fail. Best thing
+  to do is to make sure you have write permission on
+  $(MACHINE_INSTALLROOT)
+
+Configuring: 
+  
+  MCL stores configuration files in $(MCL_CONFIG_PATH). Config files
+  include net definitions (ontology descriptions), conditional
+  probability tables (priors), and response costs. Ontology files can
+  be modified, extended, and otherwise according to the ODL
+  manual. When you have modified the ontologies, the conditional
+  probability tables will need to be reconfigured.
+
+  Configuring the CPTs works as follows (unfortunately, this is a
+  little clunky atm):
+
+  - make config
+  - this will produce an executable in bin
+  - bin/mclconfig <module> <ontologybase> [domain] [agent] [controller]
+
+  Probably, what you will want to start with:
+
+  > bin/mclconfig cpt basic default
+
+  This will write uniform priors for the the ontology in
+  netdefs/basic.ont to $(MCL_CONFIG_PATH)/default/basic_cpt.mcl
+
+Usage:
+
+- link your executables agains MCL2Core  
+- be sure to define the environment variable MCL_CONFIG_PATH and
+  point it to the directory $(MACHINE_INSTALLROOT)/lib/mcl
+- create a file in your home directory ".mcl_config" that contains
+  any necessary settings. to see a complete list of settings, see
+  assets/settings.tet. for an explanation of settings files, see
+  the README in the umbc_utils distribution.
+
+ 

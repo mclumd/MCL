@@ -1,0 +1,4 @@
+MACHINE_INCDIRS = /data/share/mcl/include
+MACHINE_INSTALLROOT = /data/share/mcl
+MACHINE_LIBDIRS = /data/share/mcl/lib
+MACHINE_CFLAGS = -fPIC

@@ -1,0 +1,24 @@
+
+CPT Editor
+8/8/2011 Matt Schmill
+
+A basic CPT editor tool for MCL's CPTs. Implemented in Java/Swing.
+Requires ant and java.
+
+Build the project using "ant" in the directory where build.xml is located.
+Execute the editor as follows:
+
+  java -classpath build/jar/MCLUI.jar mcl.config.ui.cptEditor <ontology> [domain] [agent] [controller]
+
+if domain/agent/controller are ommitted, "default" will be used.
+The file that will be worked on will be 
+
+  $(MCL_CONFIG_PATH)/config/default/<ontology>_cpt.mcl
+  $(MCL_CONFIG_PATH)/config/<domain>/<ontology>_cpt.mcl
+  $(MCL_CONFIG_PATH)/config/<domain>/<agent>/<ontology>_cpt.mcl
+  $(MCL_CONFIG_PATH)/config/<domain>/<agent>/<controller>/<ontology>_cpt.mcl
+
+Once you are into the editor, you can list the nodes by typing "list".
+You can set all the evidence node priors to 0 by typing "putblanks".
+
+You can save the cpt file by writing "save <node>" where <node> is the name of a node 

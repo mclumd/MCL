@@ -1,0 +1,3 @@
+mcl.breakOnViolation=false
+mcl.doNotFail=true
+mclserver.logFile=server_log.html

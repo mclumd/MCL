@@ -1,0 +1,2 @@
+SYS_LIBDIR = /fs/metacog/group/work/mcl_current/lib
+SYS_INCLUDEDIR = /fs/metacog/group/work/mcl_current/include

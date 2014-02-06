@@ -1,0 +1,147 @@
+# CORE.ONT .... MCL ontology fringeless description file
+
+# node types:
+#
+# hostProp - host properties
+# genInd - general purpose indication node
+# concInd - concrete (fringe) indication directly activatable by MCL
+# iCore - indication core node 
+# HII - Host Initiated Indication
+# failure - general purpose failure node
+# genResponse - general purpose response node
+# interactive - boolean interactive response node
+# concResponse - concrete (implementable) response node
+
+# link types:
+#
+# > intraontological
+# link abstraction(src=,dst=)
+#      - from specific (src) node to more general (dst)
+# link IFC(src=,dst=)
+#      - Indication Fringe to Core
+# link specification(src=,dst=)
+#      - from abstract to specific (response ontology base type)
+#
+# > interontological
+# link diagnostic(src=,dst=)
+#      - link from indication to failure
+# link inhibitory(src=,dst=)
+#      - link from indication to response (inhibiting response)
+# link support(src=,dst=)
+#      - link from indication to response (supporting response)
+
+ontology indications (
+  # host properties...
+
+  node hostProp(name=sensorsCanFail,
+		prop=pci_sensors_can_fail)
+  node hostProp(name=effectorsCanFail,
+		prop=pci_effectors_can_fail)
+  node hostProp(name=actionInPlay,
+		prop=pci_action_in_play)
+  node genInd(name=hostProp,
+	      doc="supernode for host properties to ensure full linkage.")
+
+  # provenance (what the sensor is attached to)
+  node concInd(name=provenance:object)
+  node concInd(name=provenance:self)
+
+  node genInd(name=provenance,
+	      doc="to provide total linkage")
+
+  # sensor classes
+
+  node concInd(name=sc:state)
+  node concInd(name=sc:control)
+  node concInd(name=sc:spatial)
+  node concInd(name=sc:temporal)
+  node concInd(name=sc:resource)
+  node concInd(name=sc:reward)
+  node concInd(name=sc:ambient)
+  node concInd(name=sc:objectprop)
+  node concInd(name=sc:message)
+  node concInd(name=sc:counter)
+  node concInd(name=sc:unspec)
+
+  node iCore(name=observable)
+
+  node iCore(name=indication,
+	     doc="root indication for temporarily orphaned fringe nodes.")
+
+  # violation type
+
+  node genInd(name=divergence,
+	      doc="observable did not do what was expected (this is general)")
+  node genInd(name=aberration,
+	      doc="observable changed when it was not supposed to.")
+  node genInd(name=breakout-low,
+	      doc="observable fell through a floor expectation.")
+  node genInd(name=breakout-high,
+	      doc="observable exceeded a ceiling expectation.")
+  node genInd(name=missed-target,
+	      doc="observable was supposed to change but missed the target.")
+  node genInd(name=short-of-target,
+	      doc="observable lower than expected target.")
+  node genInd(name=long-of-target,
+	      doc="observable higher than expected target.")
+  node genInd(name=missed-unchanged,
+	      doc="was supposed to change to target but didn't change at all.")
+
+  node concInd(name=outOfRange,
+                doc="value out of specified range of acceptable values.")
+  node concInd(name=notInSet,
+		doc="value not in specified set of acceptable values.")
+
+  node concInd(name=illegalValue,
+		doc="value was not in the specified legal range/set.")
+
+  node concInd(name=unreachableMCLstate,
+		doc="a supposedly unreachable MCL state was reached.")
+  node genInd(name=MCLexplosion,
+		doc="something went wrong within MCL.")
+
+)
+
+linkage all (
+  # intra I links
+
+  link abstraction(src=sc:state,dst=observable)
+  link abstraction(src=sc:control,dst=observable)
+  link abstraction(src=sc:spatial,dst=observable)
+  link abstraction(src=sc:temporal,dst=observable)
+  link abstraction(src=sc:resource,dst=observable)
+  link abstraction(src=sc:reward,dst=observable)
+  link abstraction(src=sc:ambient,dst=observable)
+  link abstraction(src=sc:objectprop,dst=observable)
+  link abstraction(src=sc:message,dst=observable)
+  link abstraction(src=sc:counter,dst=observable)
+  link abstraction(src=sc:unspec,dst=observable)
+
+  link abstraction(src=provenance:self,dst=provenance)
+  link abstraction(src=provenance:object,dst=provenance)
+  link abstraction(src=provenance,dst=indication)
+
+  link abstraction(src=observable,dst=indication)
+  link abstraction(src=divergence,dst=indication)
+  link abstraction(src=hostProp,dst=indication)
+
+  link abstraction(src=sensorsCanFail,dst=hostProp)
+  link abstraction(src=effectorsCanFail,dst=hostProp)
+  link abstraction(src=actionInPlay,dst=hostProp)
+
+  link abstraction(src=aberration,dst=divergence)
+  link abstraction(src=breakout-low,dst=aberration)
+  link abstraction(src=breakout-high,dst=aberration)
+  link abstraction(src=missed-target,dst=divergence)
+  link abstraction(src=missed-unchanged,dst=missed-target)
+  link abstraction(src=short-of-target,dst=missed-target)
+  link abstraction(src=long-of-target,dst=missed-target)
+
+  link abstraction(src=outOfRange,dst=illegalValue)
+  link abstraction(src=notInSet,dst=illegalValue)
+  link abstraction(src=illegalValue,dst=divergence)
+
+  link abstraction(src=unreachableMCLstate,dst=MCLexplosion)
+  link abstraction(src=MCLexplosion,dst=indication)
+
+)

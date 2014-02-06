@@ -1,0 +1,9 @@
+#ifndef MCL_SYMBOLS_HEADER_ISDEF
+#define MCL_SYMBOLS_HEADER_ISDEF
+
+#include "APITypes.h"
+#include <string>
+#include <map>
+
+using namespace std;
+

@@ -1,0 +1,47 @@
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+///
+/// FUNCTIONS FOR SYMBOLS NAMESPACE...
+///
+
+namespace metacog {
+
+  namespace symbols {
+
+    class symbol_table {
+      public:
+	symbol_table(string name);
+        int symbol_intval(string name);
+        int symbol_intval(string name,bool* exists);
+        double symbol_dblval(string name);
+        double symbol_dblval(string name,bool* exists);
+	void symbol_def(string name,int val);
+	void symbol_def(string name,double val);
+	string reverse_lookup(string prefix, int value,
+			      bool* none, bool* multi);
+
+      private:
+	map<string,int> intmap;
+	map<string,double> dblmap;
+	string tname;
+
+    };
+
+    extern symbol_table __mcl_global_symtable;
+
+    int  global_symbol_intval(string name);
+    int    global_symbol_intval(string name,bool* exists);
+    double global_symbol_dblval(string name);
+    double global_symbol_dblval(string name,bool* exists);
+    void   global_symbol_def(string name,int val);
+    void   global_symbol_def(string name,double val);
+
+    int    smartval_int(string specifier, bool* error);
+    string reverse_lookup(string prefix, int value, bool* none, bool* multi);
+
+  };
+
+};
+
+#endif

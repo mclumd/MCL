@@ -1,0 +1,218 @@
+
+# node types:
+#
+# hostProp - host properties
+# genInd - general purpose indication node
+# concInd - concrete (fringe) indication directly activatable by MCL
+# iCore - indication core node 
+# HII - Host Initiated Indication
+# failure - general purpose failure node
+# genResponse - general purpose response node
+# interactive - boolean interactive response node
+# concResponse - concrete (implementable) response node
+
+# link types:
+#
+# > intraontological
+# link abstraction(src=,dst=)
+#      - from specific (src) node to more general (dst)
+# link IFC(src=,dst=)
+#      - Indication Fringe to Core
+# link specification(src=,dst=)
+#      - from abstract to specific (response ontology base type)
+#
+# > interontological
+# link diagnostic(src=,dst=)
+#      - link from indication to failure
+# link inhibitory(src=,dst=)
+#      - link from indication to response (inhibiting response)
+# link support(src=,dst=)
+#      - link from indication to response (supporting response)
+
+ontology indications (
+
+  # provenance (what the sensor is attached to)
+  node concInd(name=provenance:object)
+  node concInd(name=provenance:self)   
+  node genInd(name=provenance, doc="to provide total linkage")
+  
+  #sensors
+  node concInd(name=sc:actor)
+  node concInd(name=sc:object)
+  node concInd(name=sc:goalscene)
+  node concInd(name=sc:itemlocation)
+  node concInd(name=sc:mainresult)
+  node concInd(name=sc:opponent)
+  node concInd(name=sc:charge)
+  node concInd(name=sc:to)
+  #node concInd(name=state)
+  #node concInd(name=temporal)
+  #actor -> state, object -> temporal (hopefully fixed)
+  node concInd(name=sc:unspec)
+  node iCore(name=observable)
+  
+  
+  	
+ #divergence
+ node genInd(name=divergence,
+	      doc="observable did not do what was expected (this is general)")
+ node genInd(name=aberration,
+	      doc="observable changed when it was not supposed to.")
+ node concInd(name=notInSet,
+		doc="value not in specified set of acceptable values.")
+ node concInd(name=illegalValue,
+		doc="value was not in the specified legal range/set.")
+
+ #root
+ node iCore(name=indication, 
+  	doc="root indication for temporarily orphaned fringe nodes.")
+
+)
+
+linkage indications (
+
+#provenance
+link abstraction(src=provenance:object,dst=provenance)
+link abstraction(src=provenance:self,dst=provenance)
+link abstraction(src=provenance,dst=indication)
+
+#sensors
+link abstraction(src=sc:actor,dst=observable)
+link abstraction(src=sc:object,dst=observable)
+link abstraction(src=sc:goalscene,dst=observable)
+link abstraction(src=sc:mainresult,dst=observable)
+link abstraction(src=sc:opponent,dst=observable)
+link abstraction(src=sc:charge,dst=observable)
+link abstraction(src=sc:to,dst=observable)
+link abstraction(src=sc:itemlocation,dst=observable)
+link abstraction(src=sc:unspec,dst=observable)
+link abstraction(src=observable,dst=indication)
+
+#divergence
+link abstraction(src=notInSet,dst=illegalValue)
+link abstraction(src=illegalValue,dst=divergence)
+link abstraction(src=aberration,dst=divergence)
+link abstraction(src=divergence,dst=indication)
+
+)
+
+ontology failures (
+
+  node failure(name=failure,
+	       doc="the class of all failures.")
+	       
+  node failure(name=knowledgeError,
+	       doc="class of failures pertaining to internal knowledge and representations.")
+  node failure(name=modelError,
+	       doc="class of failures pertaining to internal representations.")
+  node failure(name=predictiveModelError,
+	       doc="class of failures in which inaccurate predictions made by models are causing anomalies.")
+  node failure(name=proceduralModelError,
+	       doc="class of failures in which inadequacies in a procedural model is causing anomalies.")
+  node failure(name=storyError,
+	       doc="class of failures pertaining to mistakes in story.")
+
+)
+
+linkage failures (
+
+link abstraction(src=knowledgeError,dst=failure)
+link abstraction(src=storyError,dst=knowledgeError)
+link abstraction(src=modelError,dst=knowledgeError)
+link abstraction(src=predictiveModelError,dst=modelError)
+link abstraction(src=proceduralModelError,dst=modelError)
+
+)
+
+ontology responses (
+
+node genResponse(name=response,
+  	           doc="root of all responses.")
+node genResponse(name=internalResponse,
+	           doc="response taken internally to the host.")
+node genResponse(name=externalResponse,
+	           doc="response taken with external help.")
+node genResponse(name=actorResponse,
+	           doc="response involving the frame's actor.")
+node genResponse(name=goalResponse,
+	           doc="response involving the frame's goal(s).")
+node genResponse(name=objectResponse,
+	           doc="response involving the frame's object.")
+node genResponse(name=frameResponse,
+	           doc="response involving the frame itself.")
+node concResponse(name=evaluateGoals,
+	           doc="re-evaluate whether the goals or results associated with this action are appropriate.")
+node concResponse(name=evaluateActor,
+	           doc="re-evaluate whether the actor actually belongs to the expected class.")
+node concResponse(name=evaluateFrame,
+	           doc="evaluate whether the frame is being correctly categorized.
+	           Possibly create a new frame type that includes this actor/object type.")
+node concResponse(name=evaluateObject,
+	           doc="re-evaluate whether the actor actually belongs to the expected class.")
+
+)
+
+linkage responses (
+
+  link specification(src=response,dst=internalResponse)
+  link specification(src=response,dst=externalResponse)
+  link specification(src=internalResponse,dst=frameResponse)
+  link specification(src=internalResponse,dst=objectResponse)
+  link specification(src=internalResponse,dst=actorResponse)
+  link specification(src=internalResponse,dst=goalResponse)
+  link specification(src=actorResponse,dst=evaluateActor)
+  link specification(src=objectResponse,dst=evaluateObject)
+  link specification(src=frameResponse,dst=evaluateFrame)
+  link specification(src=goalResponse,dst=evaluateGoals)
+
+)
+
+linkage inter (
+
+link diagnostic(src=indication,dst=failure)
+#link diagnostic(src=state,dst=knowledgeError)
+#link diagnostic(src=temporal,dst=knowledgeError)
+
+link prescriptive(src=indication,dst=response)
+link prescriptive(src=notInSet,dst=internalResponse)
+
+link prescriptive(src=sc:actor,dst=actorResponse)
+link prescriptive(src=sc:object,dst=objectResponse)
+link prescriptive(src=sc:goalscene,dst=goalResponse)
+link prescriptive(src=sc:mainresult,dst=goalResponse)
+link prescriptive(src=sc:opponent,dst=objectResponse)
+link prescriptive(src=sc:charge,dst=internalResponse)
+link prescriptive(src=sc:to,dst=frameResponse)
+link prescriptive(src=sc:itemlocation,dst=frameResponse)
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	           
+
+
+
+
+
+
+
+

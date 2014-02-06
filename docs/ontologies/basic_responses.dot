@@ -1,0 +1,39 @@
+digraph responses {
+  size="8,10"
+  "response(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "internalResponse(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "externalResponse(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "plantResponse(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "systemResponse(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "runDiagnostic(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "amendKnowledgeBase(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "amendPredictiveModels(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "amendProceduralModels(0.00)" [shape=ellipse,color=green,fontcolor=green];
+  "runSensorDiagnostic(0.00)" [shape=rectangle,color=sienna,fontcolor=sienna];
+  "resetSensor(0.00)" [shape=rectangle,color=sienna,fontcolor=sienna];
+  "runEffectorDiagnostic(0.00)" [shape=rectangle,color=sienna,fontcolor=sienna];
+  "resetEffector(0.00)" [shape=rectangle,color=sienna,fontcolor=sienna];
+  "rebuildPredictiveModels(0.00)" [shape=rectangle,color=sienna,fontcolor=sienna];
+  "tryAgain(0.00)" [shape=rectangle,color=sienna,fontcolor=sienna];
+  "response(0.00)" -> "internalResponse(0.00)";
+  "response(0.00)" -> "externalResponse(0.00)";
+  "internalResponse(0.00)" -> "plantResponse(0.00)";
+  "internalResponse(0.00)" -> "systemResponse(0.00)";
+  "plantResponse(0.00)" -> "runDiagnostic(0.00)";
+  "systemResponse(0.00)" -> "amendKnowledgeBase(0.00)";
+  "amendKnowledgeBase(0.00)" -> "amendPredictiveModels(0.00)";
+  "predictiveModelError(0.00)" -> "amendPredictiveModels(0.00)" [style = dotted];
+  "amendKnowledgeBase(0.00)" -> "amendProceduralModels(0.00)";
+  "sc:control(0.00)" -> "amendProceduralModels(0.00)" [style = dotted];
+  "runDiagnostic(0.00)" -> "runSensorDiagnostic(0.00)";
+  "sensorVerifiedBroken(0.00)" -> "runSensorDiagnostic(0.00)" [style = dotted];
+  "sensorVerifiedWorking(0.00)" -> "runSensorDiagnostic(0.00)" [style = dotted];
+  "sensorMalfunction(0.00)" -> "runSensorDiagnostic(0.00)" [style = dotted];
+  "plantResponse(0.00)" -> "resetSensor(0.00)";
+  "runDiagnostic(0.00)" -> "runEffectorDiagnostic(0.00)";
+  "sc:state(0.00)" -> "runEffectorDiagnostic(0.00)" [style = dotted];
+  "plantResponse(0.00)" -> "resetEffector(0.00)";
+  "amendKnowledgeBase(0.00)" -> "rebuildPredictiveModels(0.00)";
+  "systemResponse(0.00)" -> "tryAgain(0.00)";
+  "sc:spatial(0.00)" -> "tryAgain(0.00)" [style = dotted];
+}

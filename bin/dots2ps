@@ -1,0 +1,4 @@
+bin/makeDot $1
+dot -Tps docs/ontologies/$1_indications.dot -o docs/ontologies/$1_indications.ps
+dot -Tps docs/ontologies/$1_failures.dot -o docs/ontologies/$1_failures.ps
+dot -Tps docs/ontologies/$1_responses.dot -o docs/ontologies/$1_responses.ps

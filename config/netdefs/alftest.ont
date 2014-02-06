@@ -1,0 +1,62 @@
+ontology indications (
+  node concInd(name=sc:counter)
+  node concInd(name=sc:actor)
+  node concInd(name=provenance:self)
+  node concInd(name=breakout-high)
+  node iCore(name=indication, doc="root indication for fringe nodes")
+  node iCore(name=pauseInd, doc="pause problem.")
+)
+
+ontology failures (
+#  node failure(name=failure,
+#	       doc="the class of all failures.")
+  node failure(name=userError,
+           doc="class of errors pertaining to user errors.")
+  node failure(name=modelError,
+           doc="class of errors pertaining to internal representations.")
+)
+
+ontology responses (
+  node genResponse(name=response,
+				doc="root of all responses.")
+  node genResponse(name=responsePause,
+				doc="response for pause problems.")
+  node genResponse(name=responseRevise,
+				doc="generic revise expectation response.")
+  node concResponse(name=tryAgain,
+  	            doc="instruct the host to retry the failed activity.",
+		    code=crc_try_again)
+  node concResponse(name=reviseExpectation,
+				doc="instruct the host to revise internal expectation.",
+			code=crc_revise_expectations)
+)
+
+linkage all (
+  # intra I links
+  link IFC(src=sc:counter, dst=indication)
+  link IFC(src=sc:actor, dst=pauseInd)
+  
+  # intra F links
+  
+  # intra R links
+  link specification(src=responsePause,dst=tryAgain)
+  link specification(src=responseRevise,dst=reviseExpectation)
+
+  # inter links
+  # problem could have been no F->R links?  
+  
+#  link diagnostic(src=indication,dst=failure)
+  link diagnostic(src=sc:actor,dst=userError)
+  link diagnostic(src=sc:counter,dst=modelError)
+
+  link inhibitory(src=pauseInd, dst=responsePause)
+  link inhibitory(src=indication, dst=responseRevise)
+
+#  link prescriptive(src=userError,dst=tryAgain)
+  link prescriptive(src=sc:actor, dst=tryAgain)
+  link prescriptive(src=userError,dst=responsePause)
+
+#  link prescriptive(src=modelError,dst=reviseExpectation)
+  link prescriptive(src=sc:counter, dst=reviseExpectation)
+  link prescriptive(src=modelError,dst=responseRevise)
+)

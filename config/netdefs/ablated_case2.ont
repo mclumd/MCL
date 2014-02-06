@@ -1,0 +1,83 @@
+# BASIC.ONT .... basic MCL ontology description file
+
+# node types:
+#
+# hostProp - host properties
+# genInd - general purpose indication node
+# concInd - concrete (fringe) indication directly activatable by MCL
+# iCore - indication core node 
+# HII - Host Initiated Indication
+# failure - general purpose failure node
+# genResponse - general purpose response node
+# interactive - boolean interactive response node
+# concResponse - concrete (implementable) response node
+
+# link types:
+#
+# > intraontological
+# link abstraction(src=,dst=)
+#      - from specific (src) node to more general (dst)
+# link IFC(src=,dst=)
+#      - Indication Fringe to Core
+# link specification(src=,dst=)
+#      - from abstract to specific (response ontology base type)
+#
+# > interontological
+# link diagnostic(src=,dst=)
+#      - link from indication to failure
+
+include CORE_indicationFringe
+
+ontology indications (
+
+#  node HII(name=sensorVerifiedBroken,
+#	   doc="the host is verifying that a sensor appears nonfunctional.")
+#  node HII(name=sensorVerifiedWorking,
+#	   doc="the host is verifying that a sensor of interest appears to be working.")
+
+)
+
+linkage indications-intra (
+
+)
+
+ontology failures (
+  node failure(name=failure,
+	       doc="the class of all failures.")
+
+)
+
+linkage failure-intra (
+
+)
+
+ontology responses (
+  node genResponse(name=response,
+  	           doc="root of all responses.")
+  node concResponse(name=rescue,
+		    code=crc_rescue,
+ 	            doc="attempt all known recovery/rescue protocols.")
+  node concResponse(name=tryAgain,
+		    code=crc_try_again,
+  	            doc="re-attempt anomalous behavior.")
+  node concResponse(name=giveUp,
+  	            doc="terminal state on an anomaly fix.",
+		    code=crc_give_up)
+
+)
+
+linkage response-intra (
+
+  link specification(src=response,dst=rescue)
+  link specification(src=response,dst=giveUp)
+  link specification(src=response,dst=tryAgain)
+
+)
+
+linkage inter (
+
+  link diagnostic(src=indication,dst=failure)
+
+  link prescriptive(src=failure,dst=response)
+
+)

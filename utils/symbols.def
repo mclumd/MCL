@@ -1,0 +1,138 @@
+def  MISSING_FLOAT_VALUE -9797.9797
+
+prefix PCI
+size MIN_INDEX PCI          //!< starting index into PC vec for PCIs
+psym INTENTIONAL PCI
+psym EFFECTORS_CAN_FAIL PCI
+psym SENSORS_CAN_FAIL PCI
+psym PARAMETERIZED PCI
+psym DECLARATIVE PCI
+psym RETRAINABLE PCI
+psym HLC_CONTROLLING PCI
+psym HTN_IN_PLAY PCI
+psym PLAN_IN_PLAY PCI
+psym ACTION_IN_PLAY PCI
+size MAX PCI
+def  PCI_COUNT PCI_MAX
+
+resume CRC PCI
+size MIN_INDEX CRC          //!< starting index into PC vec for CRCs
+psym IGNORE CRC             //!< response code: ignore the violation
+psym NOOP CRC               //!< response code: MCL takes No Operation
+psym TRY_AGAIN CRC          //!< response code: Host try same control block
+psym TRY_2_AGAIN CRC          //!< response code: Host try same control block
+psym SOLICIT_HELP CRC       //!< response code: ask for help
+psym RELINQUISH_CONTROL CRC //!< response code: let user control system
+psym SENSOR_DIAG CRC        //!< response code: run sensor diagnostic
+psym EFFECTOR_DIAG CRC      //!< response code: run effector diagnostic
+psym SENSOR_RESET CRC       //!< response code: reset / repair sensor
+psym EFFECTOR_RESET CRC     //!< response code: reset / repair effector
+psym ACTIVATE_LEARNING CRC  //!< response code: activate/reactivate learning
+psym ADJ_PARAMS CRC         //!< response code: adjust/optimize parameters
+psym REBUILD_MODELS CRC     //!< response code: rebuild underlying models
+psym REVISIT_ASSUMPTIONS CRC //!< response code: revisit control assumptions
+psym AMEND_CONTROLLER CRC   //!< response code: modify/repair control structure
+psym REVISE_EXPECTATIONS CRC //!< response code: revise controller expectations
+psym ALG_SWAP CRC           //!< response code: swap out underlying algorithm
+psym CHANGE_HLC CRC         //!< response code: change high level control goals
+psym RESCUE CRC             //!< response code: engage 'rescue' protocol
+psym GIVE_UP CRC            //!< response code: give up whatever host is doing
+
+psym EXTENDED_CODE CRC      //!< response code: no code in symbols
+
+size PCV_MAXINDEX CRC       //!< maximum index into vector containing CRCs
+def  PC_VECTOR_LENGTH CRC_PCV_MAXINDEX  //!< size of PC vector (PCI + CRC)
+def  CRC_MAX (PC_VECTOR_LENGTH - PCI_MAX) //!< number of CRCs total
+
+header inline int crc_offset_base_zero(pkType code) { return code - PCI_MAX; }
+
+def  PC_YES true      //! prop code true
+def  PC_NO  false     //! prop code false 
+
+/* expectation codes */
+def EC_ILLEGAL 0x00    //!< UNUSED expectation code
+
+prefix EC 1
+
+/* maintenance */
+psym STAYUNDER EC      //!< expectation: stay under spec value
+psym STAYOVER EC       //!< expectation: stay over spec value
+psym MAINTAINVALUE EC  //!< expectation: maintain spec value
+psym WITHINNORMAL EC   //!< expectation: stay within range of spec value
+
+psym RATIO_MAINTAIN EC  //!< expectation: maintain ratio
+psym RATIO_STAYUNDER EC //!< expectation: ratio must stay under threshold 
+psym RATIO_STAYOVER EC  //!< expectation: ratio must stay under threshold 
+
+psym REALTIME EC       //!< expectation: compl. before realtime deadline
+psym TICKTIME EC       //!< expectation: compl. before tick deadline
+
+/* effects     */
+psym GO_UP EC          //!< effect: go up from current value
+psym GO_DOWN EC        //!< effect: go down from current value
+psym NET_ZERO EC       //!< effect: no net change at conclusion
+psym ANY_CHANGE EC     //!< effect: any change at all on conclusion
+psym NET_RANGE EC      //!< effect: conclude within some range
+psym TAKE_VALUE EC     //!< effect: change to specified value
+
+psym DONT_CARE EC      //!< effect: never violate -- don't care expectation
+psym BE_LEGAL EC       //!< expectation: always remain legal
+
+/* data types     */
+prefix DT
+psym INTEGER DT
+psym RATIONAL DT
+psym BINARY DT
+psym BITFIELD DT
+psym SYMBOL DT
+
+/* sensor codes   */
+prefix SC
+psym STATE    SC 
+psym CONTROL  SC 
+psym SPATIAL  SC 
+psym TEMPORAL SC 
+psym RESOURCE SC 
+psym REWARD   SC 
+psym AMBIENT  SC 
+psym OBJECTPROP SC 
+psym MESSAGE  SC 
+psym COUNTER  SC
+psym ACTOR    SC
+psym OBJECT   SC
+psym GOALSCENE SC
+psym MAINRESULT SC
+psym OPPONENT SC
+psym CHARGE SC
+psym TO SC
+psym ITEMLOCATION SC
+psym UNSPEC   SC
+size NUMCODES_LEGAL SC
+
+/* noise profiles */
+prefix MCL_NP
+psym NO_PROFILE MCL_NP
+psym PERFECT    MCL_NP
+psym UNIFORM    MCL_NP
+def  MCL_NP_AUTOMATIC 0xFF
+def  MCL_NP_DEFAULT MCL_NP_PERFECT
+
+prefix PROP
+/* property code indexes (into the prop vector) */
+psym DT PROP
+psym SCLASS PROP
+psym NOISEPROFILE PROP
+size COUNT PROP
+def  NUMBER_OF_SENSOR_PROPS PROP_COUNT
+
+/* miscellaneous defines ... */
+def RESREF_NO_REFERENCE 0
+def EGK_NO_EG 0
+def EGK_BASE_LEVEL -1
+
+prefix RELATION
+psym EQUAL RELATION
+psym GT    RELATION
+psym LT    RELATION
+psym GTE   RELATION
+psym LTE   RELATION
